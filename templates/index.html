@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block title %}Weight What?{% endblock %}
+
+{%  block body_content %}
+        <h1 class="ww-title">WEIGHT WHAT</h1>
+        <!-- this is the verbose and not recommended way of implementing a wwf form in Flask -->
+        <!--
+        <form method="POST">
+        {{ log_form.hidden_tag() }}
+        {{ log_form.user.label }}{{ log_form.user(id='login-user-field') }}
+            <br>
+        {{ log_form.pswrd.label }}{{ log_form.pswrd(id='login-pswrd-field') }}
+            <br>
+        {{ log_form.submit(id='login-submit') }}
+        </form>
+        -->
+        {{ wtf.quick_form(log_form, id='log-form') }}
+        <div class="date-choice">
+            {{ wtf.quick_form(date_form, id='datepick') }}
+        </div>
+{% endblock %}

@@ -1,0 +1,21 @@
+body {
+    background-color: #35d0ba;
+    color: #fefed5;
+
+}
+
+.date-choice {
+    margin: 5px auto 5px auto;
+    width: 30%;
+}
+
+.ww-title {
+    font-size: 3rem;
+    text-align: center;
+    margin: 15px auto 40px auto;
+}
+
+#log-form {
+    width: 30%;
+    margin: 10px auto 10px auto
+}

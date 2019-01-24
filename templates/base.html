@@ -1,0 +1,25 @@
+{% extends "bootstrap/base.html" %}
+
+{% block title %}{% endblock %}
+
+{% block styles %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" type="text/css">
+{% endblock %}
+
+{% block body %}
+    {{ super() }}
+    {% block body_content %}
+    {% endblock %}
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    {{ moment.include_moment() }}
+    {{ datepicker.loader() }}
+    <script type="text/javascript">
+    $(function () {
+        $('#dp').datepicker();
+    });
+    </script>
+{% endblock %}
