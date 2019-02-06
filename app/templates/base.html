@@ -1,6 +1,14 @@
 {% extends "bootstrap/base.html" %}
 
-{% block title %}{% endblock %}
+{% block title %}TITLE{% endblock %}
+
+{% block head %}
+    {{ super() }}
+    <meta name="author" content="Maciej Cisowski (KnifeyMoloko)">
+    <meta name="description" content="A little app for tracking users' weight.">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+{% endblock %}
 
 {% block styles %}
     {{ super() }}

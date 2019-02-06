@@ -1,61 +1,22 @@
+"""
 import base64
 import urllib
 import numpy as np
 import io
-import os
-import psycopg2
 import functools
 import matplotlib
-from flask import Flask, render_template, Response, request, session, url_for, flash
-from flask_bootstrap import Bootstrap
-from flask_moment import Moment
-from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
-from flask_datepicker import datepicker
-from flask_wtf import FlaskForm
-from wtforms import TextField, PasswordField, FloatField
-from wtforms.validators import Required
-from pprint import pprint
 matplotlib.use("agg")
 from matplotlib import pyplot as plt
-from weightwhatclasses.wwforms import LoginForm, DateForm
-from weightwhatclasses.db_models import Measurement, User, LoginData
 #from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
 
 
-# establish path for db
-basedir = os.path.abspath(os.path.dirname(__file__))
-
-app = Flask(__name__)
-bootstrap = Bootstrap(app)
-moment = Moment(app)
-dp = datepicker(app)
-datepicker.picker(dp, id='.dp', maxDate='2019-07-01', minDate='2018-10-01', btnsId='dpbtn')
-# app config
-app.config["SECRET_KEY"] = "RoundAndProud"
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'data.sqlite')
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db = SQLAlchemy(app)
-
-# add Migrate for Alembc wrapper
-migrate = Migrate(app, db)
-
-
-@app.route('/', methods=['POST', 'GET'])
-def index():
-    d_form = DateForm()
-    log_form = LoginForm()
-    return render_template("index.html", log_form=log_form, date_form=d_form)
-
-
-@app.route('/plot')
 def plot_png():
-    """
+
     A much cleaner rednering of the plot here:
     https://stackoverflow.com/questions/50728328/python-how-to-show-matplotlib-in-flask
     :return:
-    """
+
 
     plot = get_data()
     output = io.BytesIO()
@@ -74,11 +35,11 @@ def array_to_plot(func):
         serial_arr = arr[0]
         dates_arr = arr[1]
         weight_arr = arr[2]
-        """
-        fig = Figure()
-        axis = fig.add_subplot(1,1,1)
-        axis.plot(dates_arr, weight_arr)
-        """
+
+        #fig = Figure()
+        #axis = fig.add_subplot(1,1,1)
+        #axis.plot(dates_arr, weight_arr)
+
         #plt.plot(serial_arr, label="serial")
         #plt.plot(dates_arr, label='dates')
         #plt.plot(weight_arr, label='weight')
@@ -142,7 +103,5 @@ def get_data():
     weight = [w[2] for w in data]
     print(serial, "\n", dates, "\n", weight)
     return data
-
-
-if __name__ == '__main__':
-    app.run(debug=True)
+        
+"""

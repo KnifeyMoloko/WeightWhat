@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block title %}Weight What?{% endblock %}
+
+{% block body_content %}
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <img src="{{ url_for('static', filename='img/mr_Creosote_face.jpg') }}" alt="WordArtLogo" type="png">
+            </div>
+            <div class="col">
+                <h1 class="ww-title">WEIGHT WHAT</h1>
+                <div class='login-form'>
+                    {{ wtf.quick_form(login_form, id='log-form') }}
+                </div>
+                <div class="container">
+                    {% for m in get_flashed_messages() %}
+                        <div class="alert alert-dark">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            {{ m }}
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="date-choice">
+                    {{ wtf.quick_form(date_form, id='datepick') }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
