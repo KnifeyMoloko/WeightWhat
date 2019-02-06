@@ -6,7 +6,7 @@ class Measurement(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.DateTime, unique=True, index=True)
     value = db.Column(db.Float)
-    user_id = db.relationship("User", backref="measurement_id")
+    user_id = db.relationship("User", backref="measurement")
 
     def __repr__(self):
         return '<Measurement is %d>' % self.value

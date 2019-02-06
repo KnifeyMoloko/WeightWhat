@@ -16,6 +16,11 @@ def make_shell_context():
     return dict(db=db, User=User, Measurement=Measurement)
 
 
+@app.before_first_request
+def create_db():
+    db.create_all(app=app)
+
+
 @app.cli.command()
 def test():
     """Running unit tests for WeightWhat"""
