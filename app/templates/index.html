@@ -24,7 +24,12 @@
                 </div>
                 <div class="date-choice">
                     {{ wtf.quick_form(date_form, id='datepick') }}
+                    <br>
+                    <button type='button' class="btn btn-primary btn-lg" value="reg_button"
+                            onclick="window.location.href='{{ url_for('main.register') }}';">Register
+                    </button>
                 </div>
+
             </div>
         </div>
     </div>
