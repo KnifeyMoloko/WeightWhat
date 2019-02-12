@@ -1,4 +1,5 @@
 {% extends "bootstrap/base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
 
 {% block title %}TITLE{% endblock %}
 
@@ -16,18 +17,48 @@
 {% endblock %}
 
 {% block body %}
+{% block navbar %}
     {{ super() }}
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="{{ url_for('main.index') }}">
+            <img src="/static/img/WWWordArt_small.png" alt="wieght_what brand icon">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navCollapse"
+                aria-controls="navCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+
+        <div class="collapse navbar-collapse" id="navCollapse">
+            <ul class="navbar-nav ml-auto">
+            <li class="nav-item"><a class="nav-link" href="#">Add measurement</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">See Your Results</a></li>
+            {% if current_user.is_authenticated %}
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.logout') }}">Log Out</a></li>
+            {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        {% for message in get_flashed_messages() %}
+            <div class="alert alert-light">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
     {% block body_content %}
     {% endblock %}
-{% endblock %}
-
-{% block scripts %}
-    {{ super() }}
-    {{ moment.include_moment() }}
-    {{ datepicker.loader() }}
-    <script type="text/javascript">
-    $(function () {
-        $('#dp').datepicker();
-    });
-    </script>
+    {% block scripts %}
+        {{ super() }}
+        {{ moment.include_moment() }}
+        {{ datepicker.loader() }}
+        <script type="text/javascript">
+        $(function () {
+            $('#dp').datepicker();
+        });
+        </script>
+    {% endblock %}
 {% endblock %}

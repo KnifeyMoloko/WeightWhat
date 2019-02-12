@@ -6,6 +6,7 @@ from flask_bootstrap import Bootstrap
 from flask_mail import Mail
 from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager
 from config import config
 
 # instantiate empty instances of flask extensions
@@ -13,6 +14,8 @@ bootstrap = Bootstrap()
 mail = Mail()
 moment = Moment()
 db = SQLAlchemy()
+login_mgmt = LoginManager()
+login_mgmt.login_view = 'auth.register'
 
 
 # this is the app factory function
@@ -29,9 +32,12 @@ def create_app(config_name):
     moment.init_app(app)
     mail.init_app(app)
     db.init_app(app)
+    login_mgmt.init_app(app)
 
     # only now can we import the bluepritns that will use the app instance
     from .main import main as main_bp
     app.register_blueprint(main_bp)
+    from .auth import auth as auth_bp
+    app.register_blueprint(auth_bp, url_prefix='/auth')
 
     return app

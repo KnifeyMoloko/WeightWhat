@@ -6,27 +6,18 @@
 {% block body_content %}
     <div class="container">
         <div class="row">
-            <div class="col">
-                <img src="{{ url_for('static', filename='img/mr_Creosote_face.jpg') }}" alt="WordArtLogo" type="png">
+            <div class="col-lg-8 m-auto">
+                <img src="{{ url_for('static', filename='img/WWWordArt_large.png') }}" alt="WordArtLogo" type="png">
             </div>
-            <div class="col">
-                <h1 class="ww-title">WEIGHT WHAT</h1>
+            <div class="col-lg-4 m-auto">
                 <div class='login-form'>
                     {{ wtf.quick_form(login_form, id='log-form') }}
-                </div>
-                <div class="container">
-                    {% for m in get_flashed_messages() %}
-                        <div class="alert alert-dark">
-                            <button type="button" class="close" data-dismiss="alert">&times;</button>
-                            {{ m }}
-                        </div>
-                    {% endfor %}
                 </div>
                 <div class="date-choice">
                     {{ wtf.quick_form(date_form, id='datepick') }}
                     <br>
                     <button type='button' class="btn btn-primary btn-lg" value="reg_button"
-                            onclick="window.location.href='{{ url_for('main.register') }}';">Register
+                            onclick="window.location.href='{{ url_for('auth.register') }}';">Register
                     </button>
                 </div>
 

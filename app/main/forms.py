@@ -1,19 +1,21 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, FloatField, SubmitField, DateField
+from wtforms import StringField, PasswordField, FloatField, SubmitField, DateField, BooleanField
 from wtforms.validators import DataRequired, Email, Length
 from datetime import datetime
 
 
 class LoginForm(FlaskForm):
-    user = StringField("User login: ", validators=[DataRequired()])
-    pswrd = PasswordField("Password: ", validators=[DataRequired()])
-    submit = SubmitField("Submit")
+    user = StringField("E-mail", validators=[DataRequired(), Length(1, 128), Email()])
+    pswrd = PasswordField("Password", validators=[DataRequired()])
+    keep_me = BooleanField('Keep me signed in')
+    submit = SubmitField("Sign in")
 
 
 class RegisterForm(FlaskForm):
-    username = StringField("User name: ", validators=[Email("Enter valid e-mail address"),
-                                                      DataRequired()])
-    password = PasswordField("User password: ",
+    username = StringField("User name", validators=[DataRequired(),
+                                                    Length(1, 128),
+                                                    Email("Enter valid e-mail address")])
+    password = PasswordField("User password",
                              validators=[DataRequired(),
                                          Length(min=4,
                                                 max=128,
