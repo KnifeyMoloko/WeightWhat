@@ -1,5 +1,5 @@
-from flask import render_template, session, redirect, url_for, current_app, flash
-from flask_login import login_required
+from flask import render_template, session, redirect, url_for, current_app, flash, request
+from flask_login import login_required, login_user
 from .. import db
 from ..db_models import Measurement, User
 from ..email import send_email
@@ -12,31 +12,34 @@ from .forms import LoginForm, DateForm, RegisterForm
 
 @main.route('/', methods=['GET', 'POST'])
 def index():
-    # instantiate forms for user input
     date_form = DateForm()
-    login_form = LoginForm()
-
-    # check if the whole form passed validations
-    if login_form.validate_on_submit():
-        # get the user name from the form
-        user = User.query.filter_by(name=login_form.user.data).first()
-
-        # if the user's name was not in the db
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
         if user is None:
-            # inform the user of the name not being recognized...
-            print("User not found")
-            flash("Are you new here? Click 'Register' to create an account.")
-            session['user_known'] = False  # and set the user_known flag in session
+            flash("I don't know you! No user with this email account registered.")
+        elif user is not None and not user.verify_password(form.pswrd.data):
+            flash("Incorrect password!")
+        elif user is not None and user.verify_password(form.pswrd.data):
+            login_user(user, form.keep_me.data)
+            next = request.args.get('next')
+            if next is None or not next.startswith('/'):
+                next = url_for('main.user_dash', user_id=user.id)
+            return redirect(next)
         else:
-            # the user was recognized, check password
-            print("User found")
-            session['user_known'] = True
-            session['user_name'] = login_form.user.data
-
-    return render_template('index.html', login_form=login_form, date_form=date_form)
+            redirect('main.internal_server_error')
+    return render_template('index.html', login_form=form, date_form=date_form)
 
 
 @main.route('/plot')
 @login_required
 def plot_page():
     return render_template('base.html')
+
+
+@main.route('/<user_id>/dashboard', methods=['GET', 'POST'])
+@login_required
+def user_dash(user_id):
+    uid = user_id
+    name = User.query.filter_by(id=uid).first().name
+    return render_template('dashboard.html', name=name, uid=uid)
