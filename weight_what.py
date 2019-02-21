@@ -1,4 +1,5 @@
 import os
+from sqlalchemy_utils import create_database, database_exists
 from flask_migrate import Migrate
 from flask_datepicker import datepicker
 from app import create_app, db
@@ -18,6 +19,8 @@ def make_shell_context():
 
 @app.before_first_request
 def create_db():
+    if not database_exists(app.config['SQLALCHEMY_DATABASE_URI']):
+        create_database(app.config['SQLALCHEMY_DATABASE_URI'])
     db.create_all(app=app)
 
 

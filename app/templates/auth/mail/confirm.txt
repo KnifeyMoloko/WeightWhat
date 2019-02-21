@@ -1,0 +1,14 @@
+Hi {{ user.username }},
+
+Welcome to Weight What!
+
+We hope you our application will help you to manage your weight. We'll it a pack of fries to that!
+To confirm your account please click on the following link:
+
+{{ url_for('auth.account_confirmation', token=token, _external=True) }}
+
+Good luck,
+
+Weight What Admin
+
+Note: replies to this email address are not monitored.

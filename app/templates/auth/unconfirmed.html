@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block body_content %}
+    {{ super() }}
+    <div class="page-header">
+        <h1>Hi there {{ current_user.name }}!</h1>
+        <h3>Hmm... it looks like you account was not yet confirmed.</h3>
+        <p>Before you can use the full functionality of Weight What you will need to
+        confirm your account.</p>
+        <p>Check your inbox for a confirmation email from us with further instructions</p>
+        <p>OR</p>
+        <p>if you need another confirmation email, use the following link:</p>
+        <a href="{{ url_for('auth.resend') }}">CLICK HERE</a>
+    </div>
+{% endblock %}

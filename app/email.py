@@ -12,7 +12,7 @@ def async_send_mail(app, msg):
 def send_email(to, subject, template, **kwargs):
     app = current_app. _get_current_object()
 
-    msg = Message(subject=app.config['MAIL_SUBJECT'] + subject,
+    msg = Message(subject=app.config['MAIL_SUBJECT_PREFIX'] + subject,
                   recipients=[to], sender=app.config['MAIL_SENDER'])
     msg.body = render_template(template + '.txt', **kwargs)
     msg.html = render_template(template + '.html', **kwargs)

@@ -1,6 +1,9 @@
+from flask import current_app
+
 from . import db, login_mgmt
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 
 
 @login_mgmt.user_loader
@@ -22,9 +25,10 @@ class Measurement(db.Model):
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(64), unique=True, index=True)
+    email = db.Column(db.String(64), unique=False, index=True)  #TODO: change this to True for prod
     name = db.Column(db.String, index=True)
     user_pswrd = db.Column(db.String(128))
+    user_confirmed = db.Column(db.Boolean, default=False)
     measurement_id = db.Column(db.Integer, db.ForeignKey('measurements.id'))
 
     def __repr__(self):
@@ -41,3 +45,24 @@ class User(db.Model, UserMixin):
     def verify_password(self, password):
         return check_password_hash(self.user_pswrd, password)
 
+    def create_auth_token(self, timeout=3600):
+        # create auth token for self.id with SECRET_KEY with a defined timeout
+        s = Serializer(current_app.config['SECRET_KEY'], expires_in=timeout)
+        return s.dumps({'confirm': self.id}).decode('utf-8')
+
+    def validate_auth_token(self, token):
+        s = Serializer(current_app.config['SECRET_KEY'])
+
+        # check if the token is even a loadable itsdangerous object
+        try:
+            data = s.loads(token.encode('utf-8'))
+        except:
+            return False
+
+        # compare the confirm value with self.id
+        if data.get('confirm') != self.id:
+            return False
+
+        self.user_confirmed = True
+        db.session.add(self)
+        return True

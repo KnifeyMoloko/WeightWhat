@@ -1,5 +1,7 @@
 import unittest
 from flask import current_app
+from sqlalchemy_utils import database_exists, create_database
+
 from app import create_app, db
 
 
@@ -8,7 +10,9 @@ class BasicsTestCase(unittest.TestCase):
         self.app = create_app('testing')
         self.app_context = self.app.app_context()
         self.app_context.push()
-        db.create_all()
+        if not database_exists(self.app.config['SQLALCHEMY_DATABASE_URI']):
+            create_database(self.app.config['SQLALCHEMY_DATABASE_URI'])
+        db.create_all(app=self.app)
 
     def tearDown(self):
         db.session.remove()

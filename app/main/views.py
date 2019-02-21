@@ -4,7 +4,8 @@ from .. import db
 from ..db_models import Measurement, User
 from ..email import send_email
 from . import main
-from .forms import LoginForm, DateForm, RegisterForm
+from .forms import DateForm
+from ..auth.forms import LoginForm
 
 
 # from .plots import plot_png
