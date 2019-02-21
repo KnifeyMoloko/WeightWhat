@@ -4,24 +4,25 @@
 {% block title %}Weight What?{% endblock %}
 
 {% block body_content %}
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 m-auto">
-                <img src="{{ url_for('static', filename='img/WWWordArt_large.png') }}" alt="WordArtLogo" type="png">
-            </div>
-            <div class="col-lg-4 m-auto">
-                <div class='login-form'>
-                    {{ wtf.quick_form(login_form, id='log-form') }}
+    <section>
+        <div class="container-fluid ww-main-index">
+            <div class="row">
+                <div class="col-lg-7">
+                    <img class="ww-main-logo" src="{{ url_for('static', filename='img/WWWordArt_large.png') }}" alt="WordArtLogo" type="png">
                 </div>
-                <div class="date-choice">
-                    {{ wtf.quick_form(date_form, id='datepick') }}
-                    <br>
-                    <button type='button' class="btn btn-primary btn-lg" value="reg_button"
-                            onclick="window.location.href='{{ url_for('auth.register') }}';">Register
-                    </button>
+                <div class="col-lg-5 ww-login-container">
+                    <div class="ww-login-form align-content-center">
+                        {{ wtf.quick_form(login_form, id='log-form') }}
+                        <button type='button' class="btn btn-primary btn-lg" value="reg_button"
+                                id="login-register"
+                                onclick="window.location.href='{{ url_for('auth.register') }}';">Register
+                        </button>
+                        <div class="date-choice">
+                        {{ wtf.quick_form(date_form, id='datepick') }}
+                        </div>
+                    </div>
                 </div>
-
             </div>
         </div>
-    </div>
+    </section>
 {% endblock %}

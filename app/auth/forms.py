@@ -4,10 +4,14 @@ from wtforms.validators import DataRequired, Length, EqualTo, Email, Regexp
 
 
 class LoginForm(FlaskForm):
-    email = StringField("E-mail", validators=[DataRequired(), Length(1, 128), Email()])
-    pswrd = PasswordField("Password", validators=[DataRequired(), Length(1, 128)])
-    keep_me = BooleanField('Keep me signed in')
-    submit = SubmitField("Sign in")
+    email = StringField("Email", validators=[DataRequired(), Length(1, 128), Email()],
+                        id="login-email",
+                        render_kw={"placeholder": "Enter your email"})
+    pswrd = PasswordField("Password", validators=[DataRequired(), Length(1, 128)],
+                          id="login-pass",
+                          render_kw={"placeholder": "Enter your password"})
+    keep_me = BooleanField('Keep me signed in', id="login-keep")
+    submit = SubmitField("Sign in", id="login-submit")
 
 
 class RegisterForm(FlaskForm):

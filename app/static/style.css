@@ -1,11 +1,71 @@
+* {
+    /*font-family: Verdana, "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;*/
+}
+
 body {
-    background-color: #35d0ba;
+    background-color: #df4d19;
     color: #fefed5;
 
 }
 
+.colors-to-use {
+    background-color: #99235c;
+    outline-color: #df4d19;
+    border-color: #a43737;
+    column-rule-color: #572121;
+}
+
+.ww-main-index {
+    font-family: 'Coiny', cursive;
+    /*font-family: 'Monofett', cursive;*/
+    /*font-family: 'Chango', cursive;*/
+}
+
+.ww-main-section {
+
+}
+
+.ww-navbar {
+    background-color: #a43737;
+    font-family: 'Coiny', cursive;
+}
+
+.ww-nav-item-disabled {
+    pointer-events: none;
+}
+
+.ww-nav-item-active {
+
+}
+
+.ww-navbar-collapse {
+
+}
+
+.ww-flash-container {
+
+}
+
+.ww-login-container {
+    margin: 3% auto 5% auto;
+    position: relative;
+}
+
+.ww-login-form {
+    position: relative;
+    max-width: 50%;
+    font-size: 1.25rem;
+    margin: auto;
+}
+
+.ww-main-logo {
+    margin: auto;
+    padding: 0;
+}
+
 .date-choice {
-    margin: 5px auto 5px auto;
+    display: None;
+    position: inherit;
     width: 30%;
 }
 
@@ -15,8 +75,19 @@ body {
     margin: 15px auto 40px auto;
 }
 
+#login-keep {
+    margin-top: 7px;
+    margin-bottom: 7px;
+}
 
-#log-form {
-    width: 30%;
-    margin: 10px auto 10px auto
+#login-submit {
+    margin: 10px auto 10px auto;
+    display: block;
+    width: 100%;
+}
+
+#login-register {
+    margin: 10px auto;
+    display: block;
+    width: 100%;
 }

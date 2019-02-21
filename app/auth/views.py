@@ -99,3 +99,9 @@ def resend():
     flash("A new confirmation e-mail has been sent out to your e-mail account. "
           "Please click on the link in that e-mail")
     return redirect(url_for('main.index'))
+
+
+#TODO: update styles to make this semi-presentable
+#TODO: add reset password functionality
+#TODO: add reset email functionality
+#TODO: research and add login retries limit

@@ -6,9 +6,12 @@
 {% block head %}
     {{ super() }}
     <meta name="author" content="Maciej Cisowski (KnifeyMoloko)">
-    <meta name="description" content="A little app for tracking users' weight.">
+    <meta name="description" content="The little app for tracking users' weight.">
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
     <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css?family=Coiny" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Chango" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Monofett" rel="stylesheet">
 {% endblock %}
 
 {% block styles %}
@@ -17,40 +20,71 @@
 {% endblock %}
 
 {% block body %}
-{% block navbar %}
-    {{ super() }}
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="{{ url_for('main.index') }}">
-            <img src="/static/img/WWWordArt_small.png" alt="wieght_what brand icon">
-        </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navCollapse"
-                aria-controls="navCollapse" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+    {% block navbar %}
+        {{ super() }}
+        <nav class="navbar navbar-expand-lg navbar-dark ww-navbar">
+            <a class="navbar-brand" href="{{ url_for('main.index') }}">
+                <img src="/static/img/WWWordArt_small.png" alt="weight_what brand icon">
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navCollapse"
+                    aria-controls="navCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-
-        <div class="collapse navbar-collapse" id="navCollapse">
-            <ul class="navbar-nav ml-auto">
-            <li class="nav-item"><a class="nav-link" href="#">Add measurement</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">See Your Results</a></li>
-            {% if current_user.is_authenticated %}
-            <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.logout') }}">Log Out</a></li>
-            {% endif %}
-            </ul>
-        </div>
-    </nav>
-
-    <div class="container">
-        {% for message in get_flashed_messages() %}
-            <div class="alert alert-light">
-                <button type="button" class="close" data-dismiss="alert">&times;</button>
-                {{ message }}
+            <div class="collapse navbar-collapse ww-navbar-collapse" id="navCollapse">
+                <ul class="navbar-nav ml-auto">
+                    {% if current_user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link active ww-nav-item-active" href="#">
+                                Add measurement
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active ww-nav-item-active" href="#">
+                                See Your Results
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active ww-nav-item-active" href="{{ url_for('auth.logout') }}">
+                                Log Out
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link disabled ww-nav-item-disabled" href="#" aria-disabled="true">
+                                Add measurement
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link disabled ww-nav-item-disabled" href="#" aria-disabled="true">
+                            See Your Results
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active ww-nav-item-active" href="{{ url_for('main.index') }}"
+                            aria-disabled="false">
+                                Log In
+                            </a>
+                        </li>
+                {% endif %}
+                </ul>
             </div>
-        {% endfor %}
-    </div>
-{% endblock %}
-    {% block body_content %}
+        </nav>
+
+        <div class="container ww-flash-container">
+            {% for message in get_flashed_messages() %}
+                <div class="alert alert-light">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
     {% endblock %}
+
+    {% block body_content %}
+        <section class="ww-main-section"></section>
+    {% endblock %}
+
     {% block scripts %}
         {{ super() }}
         {{ moment.include_moment() }}
