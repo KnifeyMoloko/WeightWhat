@@ -15,7 +15,7 @@ mail = Mail()
 moment = Moment()
 db = SQLAlchemy()
 login_mgmt = LoginManager()
-login_mgmt.login_view = 'auth.register'
+login_mgmt.login_view = 'auth.login'
 
 
 # this is the app factory function

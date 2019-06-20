@@ -52,7 +52,7 @@ def login():
             return redirect(next)
         else:
             redirect(url_for('main.internal_server_error'))
-    return render_template('auth/login.html')
+    return render_template('auth/login.html', login_form=form)
 
 
 @auth.route('/logout', methods=['GET'])
@@ -73,7 +73,7 @@ def account_confirmation(token):
         flash("You're so cool! Welcome aboard, user account authentication is now complete. Enjoy the app!")
     else:
         flash("Oh-oh! Something went wrong. You're authentication token has expired or was invalid. Please retry!")
-    return redirect(url_for('main.index'))
+    return redirect(url_for('main.user_dash', user_id=current_user.id))
 
 
 @auth.before_app_request
