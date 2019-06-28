@@ -7,9 +7,13 @@
 
 <section>
     <div class="container-fluid">
-        <div class="ww-login-container">
-            <div class="ww-login-form align-content-center">
-                {{ wtf.quick_form(login_form, id='log-form') }}
+        <div class="row">
+            <div class="col-lg-8 col-md-9 col-sm-8 col-xl-7">
+                <div class="ww-login-container">
+                    <div class="ww-login-form align-content-center">
+                        {{ wtf.quick_form(login_form, id='log-form') }}
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -69,6 +69,17 @@ body {
     width: 30%;
 }
 
+.ww-registration-container {
+    font-size: 2rem;
+    margin: 1.25rem auto 0.5rem auto;
+}
+
+.ww-registration-form {
+    font-size: 1rem;
+    font-family: 'Coiny', cursive;
+    margin: 1.25rem auto 0 auto;
+}
+
 .ww-title {
     font-size: 3rem;
     text-align: center;

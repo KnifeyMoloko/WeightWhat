@@ -16,7 +16,7 @@ class Measurement(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.DateTime, unique=True, index=True)
     value = db.Column(db.Float)
-    user_id = db.relationship("User", backref="measurement")
+    user_id =db.Column(db.Integer, db.ForeignKey('users.id'))
 
     def __repr__(self):
         return '<Measurement is %d>' % self.value
@@ -25,11 +25,11 @@ class Measurement(db.Model):
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(64), unique=False, index=True)  #TODO: change this to True for prod
+    email = db.Column(db.String(64), unique=True, index=True)
     name = db.Column(db.String, index=True)
     user_pswrd = db.Column(db.String(128))
     user_confirmed = db.Column(db.Boolean, default=False)
-    measurement_id = db.Column(db.Integer, db.ForeignKey('measurements.id'))
+    measurements = db.relationship("Measurement", backref='user', lazy="dynamic")
 
     def __repr__(self):
         return "<User is %r>" % self.value

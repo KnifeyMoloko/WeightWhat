@@ -105,3 +105,4 @@ def resend():
 #TODO: add reset password functionality
 #TODO: add reset email functionality
 #TODO: research and add login retries limit
+#TODO: make use of the open_resource() func for Blueprints (http://flask.pocoo.org/docs/1.0/blueprints/)

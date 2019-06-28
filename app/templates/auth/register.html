@@ -1,14 +1,21 @@
 {% extends "base.html" %}
 {% import 'bootstrap/wtf.html' as wtf %}
 
-{% block title %}New User Registration{% endblock %}
+{% block title %}Weight What? | New User Registration{% endblock %}
 
 {% block body_content %}
 
-    <h1>USER REGISTRATION</h1>
-    <div class="container">
-        {{ wtf.quick_form(reg_form, id="reg-form") }}
+<section>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xl-5 col-lg-6 col-md-6 col-sm-6 ww-registration-container container-fluid">
+                    <h1 class="text-center">REGISTRATION FORM</h1>
+                    <div class="ww-registration-form align-content-center">
+                        {{ wtf.quick_form(reg_form, id="reg-form") }}
+                    </div>
+            </div>
+        </div>
     </div>
-
+</section>
 
 {% endblock %}
