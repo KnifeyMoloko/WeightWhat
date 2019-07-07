@@ -10,8 +10,6 @@ a project to fool around with Flask extensions and dbs. Also w weight watch-like
 
 ## Directory and file structure
 
-This is the vanilla directory structure for the template:
-
     .
         ├── app
         ├── config.py
@@ -22,52 +20,86 @@ This is the vanilla directory structure for the template:
         └── weight_what.py
 
 
-
 Quick directory and file legend:
 - **root**: main directory for the project as a whole
 - **app**: houses the app with all it's sections and the app 
-factory function
+factory function (closer look below)
 - **config.py**: class based configuration, with some config 
 variables read in from env variables 
 - **tests**: unittest tests
 - **migrations**: Alembic migrations for the db
-- **weight_what.py**: main orchestration file
+- **weight_what.py**: main orchestration file. Calls the app factory
+function and passes the config object to it. Creates the shell 
+context (adding the database and db models) and _test_ CLI command, 
+registers the Migrate extension.
 
 
-## App architecture 
+## Closer look at the ./app directory file structure
+
+    .
+    ├── auth
+    │   ├── forms.py
+    │   ├── __init__.py
+    │   └── views.py
+    ├── db_models.py
+    ├── email.py
+    ├── __init__.py
+    ├── main
+    │   ├── errors.py
+    │   ├── forms.py
+    │   ├── __init__.py
+    │   ├── plots.py
+    │   └── views.py
+    ├── static
+    │   ├── favicon.ico
+    │   ├── img
+    │   └── style.css
+    └── templates
+
+Quick directory and file legend:
+- **auth** : auth blueprint files, including forms for authorization
+(e.g. registration, login), views and errors
+- **main** : main blueprint. Contains views, errors, forms and plot
+definitions for the main app pages.
+- **static** : static files: images, css style definitions, icons
+- **templates** : all html and txt templates for the app, divided
+into main templates in the **/templates** folder and **/auth**
+and **/mail** templates as subdirectories
+- **email.py** : email function definitions
+- **db_models.py** : model definitions for SQL Alchemy. Model
+definitions contain a large part of the app's functions as their
+methods
+- **\_\_init\_\_.py** : file housing the main app factory function.
+Imports all the relevant extensions (apart from Migrate) and config 
+data, initialises them, then registers blueprints, registers the 
+Login Manager, and finally instantiates the app 
+
+## Project flowchart
 
 <img src="doc/weight_what_module_flowchart.png" alt="Architecture image">
+                                                                           
 
-**weight_what.py**:
-1. creates the app instance using the **config.py** definitions
-2. initiates the datepicker and Migrate extensions
-3. makes shell context??? (I think this is for the CLI db management)
-4. setup procedure with @before_first_request - create db
-5. adds tests to CLI, so you can execute tests
+_*This flowchart is less of an actual application map or classes 
+diagram and more of just a sketch for quick lookups when I'm
+getting lost in the local dependency forest. Helps to read the
+above paragraphs to get value from it!_
 
-**./app/\__init\__.py**:
-1. stores the app factory function and actually instantiates the app with 
-config name provided by **weight_what.py**
-2. imports most of the extensions (apart from Migrate and datepicker)
-3. Adds previously loaded extensions to app
-4. imports blueprints and registers them with the app instance 
-(main and auth blueprints)
-5. registers the Login Manager with the auth blueprint (at auth.register)                                                                           
+## RAMBLE BREAK: How Blueprints work
+Blueprints work as an intermediary grouping layer for view functions 
+and error handlers. If you break up your app into functional 
+sections (say, picture storage, picture upload, user profile 
+settings), you can have a bunch of views/error handlers for each 
+section. Instead of importing them all and registering with the app 
+itself, we register them with blueprints for each section and then 
+register the blueprints with the app in the main app factory 
+function (here - in **./app/\__init\__.py**).
 
-## How Blueprints work? (Rambling version)
-Blueprints work as an intermediary grouping layer for view functions and
-error handlers. If you break up your app into functional sections (say,
-picture storage, picture upload, user profile settings), you can have a 
-bunch of views/error handlers for each section. Instead of importing them
-all and registering with the app itself, we register them with blueprints
-for each section and then register the blueprints with the app in the main
-app factory function (here - in **./app/\__init\__.py**).
-
-The twist is in the fact, that you first instantiate the Blueprint and
-then use the instance reference imported in the files defining the view
-functions and error handlers, which looks circular but is not really.
-The views and handlers are not executed until Bluprint imports them, at
-which point they are decorated to register with the Blueprint's instance.
+The twist is in the fact, that you first instantiate the Blueprint 
+and then use the instance reference imported in the files defining 
+the view functions and error handlers, which looks circular but is 
+not really. The views and handlers are not executed until Bluprint 
+imports them, at which point they are decorated to register with 
+the Blueprint's instance.
 
 ## Installation
 
