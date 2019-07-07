@@ -25,11 +25,13 @@ This is the vanilla directory structure for the template:
 
 Quick directory and file legend:
 - **root**: main directory for the project as a whole
-- **app**: 
-- **config.py**: 
-- **tests**: 
-- **migrations**:
-- **weight_what.py**:
+- **app**: houses the app with all it's sections and the app 
+factory function
+- **config.py**: class based configuration, with some config 
+variables read in from env variables 
+- **tests**: unittest tests
+- **migrations**: Alembic migrations for the db
+- **weight_what.py**: main orchestration file
 
 
 ## App architecture 

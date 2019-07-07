@@ -10,6 +10,8 @@ def async_send_mail(app, msg):
 
 
 def send_email(to, subject, template, **kwargs):
+    # current app is a thread local proxy, so we're getting
+    # the underlying object to dispatch to a new thread
     app = current_app. _get_current_object()
 
     msg = Message(subject=app.config['MAIL_SUBJECT_PREFIX'] + subject,

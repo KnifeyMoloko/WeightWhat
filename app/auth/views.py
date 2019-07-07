@@ -79,7 +79,9 @@ def account_confirmation(token):
 @auth.before_app_request
 def before_request():
     if current_user.is_authenticated \
-            and not current_user.user_confirmed and request.blueprint != 'auth':
+            and not current_user.user_confirmed \
+            and request.blueprint != 'auth' \
+            and request.endpoint != 'static':
         return redirect(url_for('auth.unconfirmed'))
 
 
@@ -99,10 +101,3 @@ def resend():
     flash("A new confirmation e-mail has been sent out to your e-mail account. "
           "Please click on the link in that e-mail")
     return redirect(url_for('main.index'))
-
-
-#TODO: update styles to make this semi-presentable
-#TODO: add reset password functionality
-#TODO: add reset email functionality
-#TODO: research and add login retries limit
-#TODO: make use of the open_resource() func for Blueprints (http://flask.pocoo.org/docs/1.0/blueprints/)

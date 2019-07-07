@@ -7,6 +7,7 @@ from flask_mail import Mail
 from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from flask_datepicker import datepicker
 from config import config
 
 # instantiate empty instances of flask extensions
@@ -33,6 +34,10 @@ def create_app(config_name):
     mail.init_app(app)
     db.init_app(app)
     login_mgmt.init_app(app)
+
+    # add datepicker and configure it
+    dp = datepicker(app)
+    datepicker.picker(dp, id='.dp', maxDate='2019-12-01', minDate='2019-01-01', btnsId='dpbtn')
 
     # only now can we import the bluepritns that will use the app instance
     from .main import main as main_bp

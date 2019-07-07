@@ -26,3 +26,6 @@ nosetests.xml
 
 # Virtual environment
 venv
+
+#TODOs
+todo.txt
