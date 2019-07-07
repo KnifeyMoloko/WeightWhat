@@ -36,6 +36,8 @@ variables read in from env variables
 
 ## App architecture 
 
+<img src="doc/weight_what_module_flowchart.png" alt="Architecture image">
+
 **weight_what.py**:
 1. creates the app instance using the **config.py** definitions
 2. initiates the datepicker and Migrate extensions
