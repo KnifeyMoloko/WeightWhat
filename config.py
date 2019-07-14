@@ -1,4 +1,5 @@
 import os
+
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 
@@ -28,6 +29,8 @@ class DevelopmentConfig(Config):
 
 class TestingConfig(Config):
     TESTING = True
+    MAIL_SUBJECT_PREFIX = "[WeightWhatAppTesting]"
+    MAIL_SENDER = 'WeighWhatApp Testing <weightwhatadmin@example.com>'
     SQLALCHEMY_DATABASE_URI = os.environ.get('TEST_DATABASE_URL') or 'sqlite:///'
 
 

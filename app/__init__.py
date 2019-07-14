@@ -1,6 +1,8 @@
 """This is the core of the Flask application. This file defines
 the app factory function and some other helper stuff that will
 create the app instances according to the specifications in config.py"""
+
+# imports
 from flask import Flask
 from flask_bootstrap import Bootstrap
 from flask_mail import Mail
@@ -39,7 +41,7 @@ def create_app(config_name):
     dp = datepicker(app)
     datepicker.picker(dp, id='.dp', maxDate='2019-12-01', minDate='2019-01-01', btnsId='dpbtn')
 
-    # only now can we import the bluepritns that will use the app instance
+    # only now can we import the blueprints that will use the app instance
     from .main import main as main_bp
     app.register_blueprint(main_bp)
     from .auth import auth as auth_bp

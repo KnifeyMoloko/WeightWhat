@@ -1,10 +1,14 @@
+"""This is the main orchestration file for the WeightWhat app.
+It calls the app factory function with the imported config,
+initiates the Migrate extension, creates the db if needed,
+makes a shell context and exposes a 'test' CLI command."""
+
+# imports
 import os
 from sqlalchemy_utils import create_database, database_exists
 from flask_migrate import Migrate
-
 from app import create_app, db
 from app.db_models import User, Measurement
-
 
 # create app instance by using the app factory function
 app = create_app(os.getenv('FLASK_CONFIG') or 'default')

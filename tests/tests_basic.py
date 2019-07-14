@@ -1,7 +1,9 @@
+"""Basic tests for the WeighWhat app."""
+
+# imports
 import unittest
 from flask import current_app
 from sqlalchemy_utils import database_exists, create_database
-
 from app import create_app, db
 
 
@@ -24,3 +26,9 @@ class BasicsTestCase(unittest.TestCase):
 
     def test_app_is_testing(self):
         self.assertTrue(current_app.config['TESTING'])
+
+    def test_app_has_db(self):
+        self.assertTrue(db.exists)
+
+    def test_secret_is_set(self):
+        self.assertIsNotNone(self.app.config['SECRET_KEY'])
