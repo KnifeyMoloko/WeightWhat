@@ -27,5 +27,8 @@ nosetests.xml
 # Virtual environment
 venv
 
+# shell scripts
+*.sh
+
 #TODOs
 todo.txt

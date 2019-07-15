@@ -29,7 +29,16 @@ class DevelopmentConfig(Config):
 
 class TestingConfig(Config):
     TESTING = True
-    MAIL_SUBJECT_PREFIX = "[WeightWhatAppTesting]"
+    SERVER_NAME = 'smtp.googlemail.com'
+    MAIL_SUBJECT_PREFIX = "[WeightWhatAppTesting] "
+    MAIL_SENDER = 'WeighWhatApp Testing <weightwhatadmin@example.com>'
+    SQLALCHEMY_DATABASE_URI = os.environ.get('TEST_DATABASE_URL') or 'sqlite:///'
+
+
+class TestingWithEmail(Config):
+    TESTING = False  # this is to allow flask-mail to actually send emails
+    SERVER_NAME = 'smtp.googlemail.com'
+    MAIL_SUBJECT_PREFIX = "[WeightWhatAppTesting] "
     MAIL_SENDER = 'WeighWhatApp Testing <weightwhatadmin@example.com>'
     SQLALCHEMY_DATABASE_URI = os.environ.get('TEST_DATABASE_URL') or 'sqlite:///'
 
@@ -42,6 +51,7 @@ class ProductionConfig(Config):
 config = {
     'development': DevelopmentConfig,
     'testing': TestingConfig,
+    'testing_with_email': TestingWithEmail,
     'production': ProductionConfig,
     'default': DevelopmentConfig
 }

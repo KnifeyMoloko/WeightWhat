@@ -1,16 +1,14 @@
+"""Unit tests for authentication features for WeightWhat app."""
+
 import unittest
-import imaplib
-import smtplib
 import email as em
-from flask import current_app
 from sqlalchemy_utils import database_exists, create_database
-from app import create_app, db
+from app import create_app, db, mail, email
 from app.db_models import User
 
 
 class RegistrationTestCases(unittest.TestCase):
     def setUp(self):
-        # create app and push it to the app context stack
         self.app = create_app('testing')
         self.app_context = self.app.app_context()
         self.app_context.push()
@@ -21,7 +19,7 @@ class RegistrationTestCases(unittest.TestCase):
         # create db tables from models
         db.create_all(app=self.app)
 
-        # create test users in db; user_4 is for email testing
+        # create test users in db and commits
         self.user_1 = User(
             email="virginia.wolf@gmail.com",
             name='Virginia Wolf',
@@ -35,23 +33,21 @@ class RegistrationTestCases(unittest.TestCase):
             password='Dublin00'
                       )
         self.user_4 = User(
+            email="knifey@moloko.com",
             name='KnifeyTest',
-            email=self.app.config['MAIL_USERNAME'],
             password='HaltAndCatchFire'
         )
         db.session.add(self.user_1)
         db.session.add(self.user_2)
         db.session.add(self.user_3)
+        db.session.add(self.user_4)
         db.session.commit()
 
-        # config the email account to be checked for incoming emails
-        self.mail_pass = self.app.config['MAIL_PASSWORD']
-        self.smtp_server = 'imap.gmail.com'
-        self.smtp_port = 993
-        # register new user
-        # login user
-        # confirm user
-        # login confirmed user
+        self.user_list = [self.user_1, self.user_2,
+                          self.user_3, self.user_4]
+
+        # TODO:login user
+        # TODO:login confirmed user
 
     def tearDown(self):
         db.session.remove()
@@ -59,51 +55,43 @@ class RegistrationTestCases(unittest.TestCase):
         self.app_context.pop()
 
     def test_register(self):
-        self.assertTrue(2 == 2)
-
-    def test_email_returns_message(self):
         """
-        Checks if there are valid authentication emails retrievable
-        from a test email account. Does not validate the contents of
-        the email.
+        Test if users created in db are registered, i.e. active.
         """
-        self.assertIsInstance(self.check_mail(self.user_4),
-                              em.message.Message)
+        for user in self.user_list:
+            self.assertTrue(user.is_active)
 
-    def test_body(self):
-        self.assertIsInstance(
-            self.parse_message(self.check_mail(self.user_4)),
-            str
-        )
-
-    def check_mail(self, user):
-        mail = imaplib.IMAP4_SSL(host=self.smtp_server, port=self.smtp_port)
-        mail.login(user.email, self.mail_pass)
-
-        mail.select('inbox')
-        # charset and data to retrieve
-        t, data = mail.search(None, 'SUBJECT "[WeightWhatApp] Welcome '
-                                    'to WeightWhat"')
-        # get the id of the latest message that is stored in data
-        latest = data[0].split()[-1]
+    def test_confirm_users(self):
         """
-        for i in range(id_list[0], id_list[-1]):
-            typ, data = mail.fetch(i, '(RFC822')
-
-            for response_part in data:
-                if isinstance(response_part, tuple):
-                    msg = em.message_from_string(response_part[1])
-                    email_subject = msg['subject']
-                    email_from = msg['from']
-                    print('From: ' + email_from + '\n')
-                    print('Subject: ' + email_subject + '\n')
-                    print('Message: ' + msg + '\n')
+        Spoofs verification emails sending, then checks the emails
+        for tokens and attempts to authenticate user accounts with
+        them.
         """
-        typ, msg_data = mail.fetch(latest, '(RFC822)')
-        return_msg = em.message_from_bytes(msg_data[0][1])
-        return return_msg
+        # use the record messages buffer to spoof an email server
+        with mail.record_messages() as outbox:
+            for user in self.user_list:
+                email.send_email(to=user.email,
+                                 subject="test_register_users",
+                                 template='auth/mail/confirm',
+                                 user=user,
+                                 token=user.create_auth_token())
+                # retrieve message for user
+                msg = outbox[self.user_list.index(user)]
 
-    def parse_message(self, message):
+                # parse message for token
+                token = self.parse_message(msg)
+                self.assertTrue(user.validate_auth_token(token))
+                self.assertTrue(user.user_confirmed)
+
+    @staticmethod
+    def parse_message(msg):
+        """
+        Parse flask-mail Message and extract token from it.
+        """
+        # recreate email object from flask-mail Message object
+        message = em.message_from_string(str(msg))
+
+        # get body from message
         if message.is_multipart():
             for part in message.walk():
                 part_type = part.get_content_type()
@@ -114,7 +102,12 @@ class RegistrationTestCases(unittest.TestCase):
                     break
         else:
             body = message.get_payload(decode=False)
-        print(type(body))
-        print(body)
-        return body
+
+        # add 21 for chars in "accpunt_confirmation/"
+        start = body.find("account_confirmation/") + 21
+        end = body.find("Good luck")
+
+        # extract token
+        token = body[start:end].strip()
+        return token
 

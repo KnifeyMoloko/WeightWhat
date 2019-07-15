@@ -12,6 +12,8 @@ class BasicsTestCase(unittest.TestCase):
         self.app = create_app('testing')
         self.app_context = self.app.app_context()
         self.app_context.push()
+
+        #  make sure a database exists for testing (defaults to SQLite)
         if not database_exists(self.app.config['SQLALCHEMY_DATABASE_URI']):
             create_database(self.app.config['SQLALCHEMY_DATABASE_URI'])
         db.create_all(app=self.app)
