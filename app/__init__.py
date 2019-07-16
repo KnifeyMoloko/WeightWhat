@@ -46,5 +46,7 @@ def create_app(config_name):
     app.register_blueprint(main_bp)
     from .auth import auth as auth_bp
     app.register_blueprint(auth_bp, url_prefix='/auth')
+    from .profile_settings import profile_settings as profile_settings_bp
+    app.register_blueprint(profile_settings_bp, url_prefix='/profile_settings')
 
     return app

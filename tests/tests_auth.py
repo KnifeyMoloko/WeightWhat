@@ -46,8 +46,6 @@ class RegistrationTestCases(unittest.TestCase):
         self.user_list = [self.user_1, self.user_2,
                           self.user_3, self.user_4]
 
-        # TODO:login user
-        # TODO:login confirmed user
 
     def tearDown(self):
         db.session.remove()
@@ -78,9 +76,9 @@ class RegistrationTestCases(unittest.TestCase):
                 # retrieve message for user
                 msg = outbox[self.user_list.index(user)]
 
-                # parse message for token
+                # parse message for token and authenticate user
                 token = self.parse_message(msg)
-                self.assertTrue(user.validate_auth_token(token))
+                user.validate_auth_token(token)
                 self.assertTrue(user.user_confirmed)
 
     @staticmethod
