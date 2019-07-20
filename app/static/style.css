@@ -86,6 +86,46 @@ body {
     margin: 15px auto 40px auto;
 }
 
+/* User profile section */
+
+#ww-profile-container {
+    font-size: 1.5rem;
+    margin: 1.25rem auto 0 auto;
+}
+
+#ww-profile-h1 {
+    margin: auto auto 1.5rem auto;
+}
+
+#ww-profile-portrait {
+    max-height: 8rem;
+}
+
+#ww-profile-data {
+    font-family: 'Coiny', cursive;
+}
+
+#ww-profile-form {
+    width: 100%;
+}
+
+.ww-profile-label {
+
+}
+
+.ww-profile-field {
+
+}
+
+.ww-profile-btn {
+
+}
+
+
+
+
+/* Login section */
+
 #login-keep {
     margin-top: 7px;
     margin-bottom: 7px;
