@@ -46,7 +46,6 @@ class RegistrationTestCases(unittest.TestCase):
         self.user_list = [self.user_1, self.user_2,
                           self.user_3, self.user_4]
 
-
     def tearDown(self):
         db.session.remove()
         db.drop_all()
@@ -68,18 +67,19 @@ class RegistrationTestCases(unittest.TestCase):
         # use the record messages buffer to spoof an email server
         with mail.record_messages() as outbox:
             for user in self.user_list:
-                email.send_email(to=user.email,
-                                 subject="test_register_users",
-                                 template='auth/mail/confirm',
-                                 user=user,
-                                 token=user.create_auth_token())
-                # retrieve message for user
-                msg = outbox[self.user_list.index(user)]
+                with self.subTest(user):
+                    email.send_email(to=user.email,
+                                     subject="test_register_users",
+                                     template='auth/mail/confirm',
+                                     user=user,
+                                     token=user.create_auth_token())
+                    # retrieve message for user
+                    msg = outbox[self.user_list.index(user)]
 
-                # parse message for token and authenticate user
-                token = self.parse_message(msg)
-                user.validate_auth_token(token)
-                self.assertTrue(user.user_confirmed)
+                    # parse message for token and authenticate user
+                    token = self.parse_message(msg)
+                    user.validate_auth_token(token)
+                    self.assertTrue(user.user_confirmed)
 
     @staticmethod
     def parse_message(msg):

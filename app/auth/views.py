@@ -28,9 +28,9 @@ def register():
         else:
             flash("This email was already used! Please use a different email.")
             reg_form.username.data = None
-
-    for error in reg_form.errors.items():
-        flash("Something went wrong in field {f}: {m}".format(f=error[0], m=error[1][0]))
+    else:
+        for error in reg_form.errors.items():
+            flash("Something went wrong in field {f}: {m}".format(f=error[0], m=error[1][0]))
 
     return render_template('auth/register.html', reg_form=reg_form)
 
@@ -52,7 +52,11 @@ def login():
             return redirect(next)
         else:
             redirect(url_for('main.internal_server_error'))
-    return render_template('auth/login.html', login_form=form)
+    else:
+        for error in form.errors.items():
+            flash("Something went wrong in field {f}: {m}".format(
+                f=error[0], m=error[1][0]))
+        return render_template('auth/login.html', login_form=form)
 
 
 @auth.route('/logout', methods=['GET'])

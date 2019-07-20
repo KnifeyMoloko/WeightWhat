@@ -29,6 +29,10 @@ def index():
             return redirect(next)
         else:
             redirect('main.internal_server_error')
+    else:
+        for error in form.errors.items():
+            flash("Something went wrong in {f} field: {m}".format(
+                f=error[0], m=error[1][0]))
     return render_template('index.html', login_form=form, date_form=date_form)
 
 
